@@ -33,7 +33,7 @@ import net.yura.domination.engine.core.RiskGame;
 import net.yura.domination.engine.p2pclient.ChatClient;
 import net.yura.domination.engine.p2pserver.ChatArea;
 import net.yura.domination.engine.translation.TranslationBundle;
-import net.yura.mobile.util.Url;
+//import net.yura.mobile.util.Url;
 
 /**
  * <p> Main Risk Class </p>
@@ -1014,6 +1014,7 @@ RiskUtil.printStackTrace(e);
 
 		}
                 else if (Addr.equals("RENAME")) {
+					/*
                     Map map = Url.toHashtable( message.substring( Addr.length()+1 ) );
 
                     String oldName = (String)map.get("oldName");
@@ -1027,6 +1028,9 @@ RiskUtil.printStackTrace(e);
                     catch (Exception ex) {
                         ex.printStackTrace();
                     }
+                    */
+                    System.err.println("Attempted to execute missing URL Library");
+                    // TODO Fix something here
                 }
 		else { // parse this normal cammand
 
