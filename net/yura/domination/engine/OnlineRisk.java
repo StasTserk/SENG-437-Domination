@@ -5,11 +5,11 @@ package net.yura.domination.engine;
  */
 public interface OnlineRisk {
 
-    public void sendUserCommand(String mtemp);
-    public void sendGameCommand(String mtemp);
+   public void sendUserCommand(String mtemp);
+   public void sendGameCommand(String mtemp);
 
-    public void closeGame();
+   public void closeGame();
 
-    public void playerRenamed(String oldName, String newName, String newAddress, int newType);
+   public void playerRenamed(String oldName, String newName, String newAddress, int newType);
 
 }

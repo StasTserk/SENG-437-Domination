@@ -14,57 +14,57 @@ import net.yura.domination.engine.core.RiskGame;
  */
 public class ChatClient implements OnlineRisk {
 
-        private String myUID;
+   private String myUID;
 
-    	private PrintWriter outChat = null;
-	private BufferedReader inChat = null;
-	private Socket chatSocket = null;
-	private ChatDisplayThread myReader = null;
+   private PrintWriter outChat = null;
+   private BufferedReader inChat = null;
+   private Socket chatSocket = null;
+   private ChatDisplayThread myReader = null;
 
-        public ChatClient(Risk risk,String uid,String host, int port) throws Exception {
-                myUID = uid;
+   public ChatClient(Risk risk,String uid,String host, int port) throws Exception {
+      myUID = uid;
 
-                chatSocket = new Socket( host , port);
+      chatSocket = new Socket( host , port);
 
-                // Create a PrintWriter object for socket output
+      // Create a PrintWriter object for socket output
 
-                outChat = new PrintWriter( chatSocket.getOutputStream(), true);
+      outChat = new PrintWriter( chatSocket.getOutputStream(), true);
 
-                // Create a BufferedReader object for socket input
+      // Create a BufferedReader object for socket input
 
-                inChat = new BufferedReader( new InputStreamReader( chatSocket.getInputStream()));
+      inChat = new BufferedReader( new InputStreamReader( chatSocket.getInputStream()));
 
-                myReader = new ChatDisplayThread(risk, inChat);
-                myReader.start();
+      myReader = new ChatDisplayThread(risk, inChat);
+      myReader.start();
 
-                outChat.println( RiskGame.NETWORK_VERSION +" "+uid+" "+RiskGame.getDefaultMap() );
+      outChat.println( RiskGame.NETWORK_VERSION +" "+uid+" "+RiskGame.getDefaultMap() );
 
-        }
+   }
 
-        public void sendUserCommand(String mtemp) {
-            outChat.println( myUID+" "+mtemp );
-        }
+   public void sendUserCommand(String mtemp) {
+      outChat.println( myUID+" "+mtemp );
+   }
 
-        public void sendGameCommand(String mtemp) {
-            outChat.println( mtemp );
-        }
+   public void sendGameCommand(String mtemp) {
+      outChat.println( mtemp );
+   }
 
-        public void closeGame() {
-            try {
-                    outChat.close();
-                    inChat.close();
+   public void closeGame() {
+      try {
+         outChat.close();
+         inChat.close();
 
-                    chatSocket.shutdownInput();
-                    chatSocket.shutdownOutput();
+         chatSocket.shutdownInput();
+         chatSocket.shutdownOutput();
 
-                    chatSocket.close();
-            }
-            catch (IOException except) { }
+         chatSocket.close();
+      }
+      catch (IOException except) { }
 
-            chatSocket = null;
-        }
+      chatSocket = null;
+   }
 
-        public void playerRenamed(String oldName, String newName, String newAddress, int newType) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
+   public void playerRenamed(String oldName, String newName, String newAddress, int newType) {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 }

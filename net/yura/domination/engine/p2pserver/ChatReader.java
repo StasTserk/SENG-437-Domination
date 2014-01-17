@@ -18,33 +18,33 @@ public class ChatReader extends Thread{
    int myIndex;
    ChatArea myChatArea;
 
-    ChatReader(BufferedReader in,  ChatArea cArea, int index) {
-       super("ChatReaderThread");
-       mySocketInput = in;
-       myIndex = index;
-       myChatArea = cArea;
+   ChatReader(BufferedReader in,  ChatArea cArea, int index) {
+      super("ChatReaderThread");
+      mySocketInput = in;
+      myIndex = index;
+      myChatArea = cArea;
    }
 
-    public void run() {
+   public void run() {
 
-	String inputLine;
+      String inputLine;
 
-	try {
-		while ((inputLine = mySocketInput.readLine()) != null) {
+      try {
+         while ((inputLine = mySocketInput.readLine()) != null) {
 
-		    myChatArea.putString(myIndex, inputLine);
+            myChatArea.putString(myIndex, inputLine);
 
-		}
-	}
-	catch (IOException e) {
+         }
+      }
+      catch (IOException e) {
 
-		//System.out.println("ChatReader IOException: "+
-		//    e.getMessage());
-		//RiskUtil.printStackTrace(e);
+         //System.out.println("ChatReader IOException: "+
+         //    e.getMessage());
+         //RiskUtil.printStackTrace(e);
 
-	}
-        
-        myChatArea.imDead(myIndex);
-	//System.out.println("ChatReader Terminating: " + myIndex);
+      }
+
+      myChatArea.imDead(myIndex);
+      //System.out.println("ChatReader Terminating: " + myIndex);
    }
 }

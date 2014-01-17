@@ -16,206 +16,206 @@ import net.yura.domination.engine.RiskController;
 public class ChatArea extends Thread {
 
 
-    private ServerSocket serverSocket = null;
-    //private static int port = 4444;
-    private RiskController gui;
+   private ServerSocket serverSocket = null;
+   //private static int port = 4444;
+   private RiskController gui;
 
 
-    // You could make this more dynamic, but it's a little
-    // simpler to keep the simple array approach
-    private ChatServerThread chatArr[]= new ChatServerThread[100];
-    private boolean stopFlag = false;
+   // You could make this more dynamic, but it's a little
+   // simpler to keep the simple array approach
+   private ChatServerThread chatArr[]= new ChatServerThread[100];
+   private boolean stopFlag = false;
 
 
 
-    public ChatArea(RiskController g,int port) throws Exception {
+   public ChatArea(RiskController g,int port) throws Exception {
 
-	gui = g;
+      gui = g;
 
-        InetAddress iaddr = InetAddress.getLocalHost();
+      InetAddress iaddr = InetAddress.getLocalHost();
 
-	serverSocket = new ServerSocket(port);
+      serverSocket = new ServerSocket(port);
 
-	gui.sendMessage("getHostName = " + iaddr.getHostName() , false, false);
-	gui.sendMessage("getHostAddress = " + iaddr.getHostAddress() , false, false);
-	gui.sendMessage("port = " + port , false, false);
+      gui.sendMessage("getHostName = " + iaddr.getHostName() , false, false);
+      gui.sendMessage("getHostAddress = " + iaddr.getHostAddress() , false, false);
+      gui.sendMessage("port = " + port , false, false);
 
-	start();
+      start();
 
-    }
+   }
 
-    public void run() {
+   public void run() {
 
-	//System.out.print("Server Started\n");
+      //System.out.print("Server Started\n");
 
-        Socket nextSock;
-        int nThreadCount=0;
-        ChatServerThread childThread;
+      Socket nextSock;
+      int nThreadCount=0;
+      ChatServerThread childThread;
 
-	//Vector sockets = new Vector();
+      //Vector sockets = new Vector();
 
-        try {
+      try {
 
-		while(true) {// Forever loop
-			// We only exit when someone (main) closes
-			// our socket.  At that point we get an 
-			// IOException
+         while(true) {// Forever loop
+            // We only exit when someone (main) closes
+            // our socket.  At that point we get an
+            // IOException
 
-                       nextSock = serverSocket.accept();
+            nextSock = serverSocket.accept();
 
-/*
-			// this stops 2 clients joining from the same host
-			boolean bad=false;
-			for (int c=0; c < sockets.size();c++) {
+            /*
+            // this stops 2 clients joining from the same host
+            boolean bad=false;
+            for (int c=0; c < sockets.size();c++) {
 
-				if (nextSock.getInetAddress().equals( ((Socket)sockets.elementAt(c)).getInetAddress() )) { bad=true; break; }
+            if (nextSock.getInetAddress().equals( ((Socket)sockets.elementAt(c)).getInetAddress() )) { bad=true; break; }
 
-			}
-			if (bad) {
+            }
+            if (bad) {
 
-				nextSock.shutdownOutput();
-				nextSock.shutdownInput();
-				nextSock.close();
+            nextSock.shutdownOutput();
+            nextSock.shutdownInput();
+            nextSock.close();
 
-				continue;
+            continue;
 
-			}
+            }
 
 
 
-			sockets.add(nextSock);
-*/
+            sockets.add(nextSock);
+            */
 
-                       //System.out.println(nThreadCount +
-                       // " Another Thread Created");
-			gui.sendMessage( "Another Client has joined: " + nThreadCount, false, false);
+            //System.out.println(nThreadCount +
+            // " Another Thread Created");
+            gui.sendMessage( "Another Client has joined: " + nThreadCount, false, false);
 
-                       //chatArr[nThreadCount] = new Chat();
+            //chatArr[nThreadCount] = new Chat();
 
-                       chatArr[nThreadCount] = childThread = new ChatServerThread(nextSock, this, nThreadCount++);
+            chatArr[nThreadCount] = childThread = new ChatServerThread(nextSock, this, nThreadCount++);
 
-                       if (childThread != null) childThread.start();
+            if (childThread != null) childThread.start();
 
-                       //else 
-                           //System.out.println("Unable to create a child thread");
-		}              
+            //else
+            //System.out.println("Unable to create a child thread");
+         }
 
-	} 
-	catch (IOException e) {
-                   //System.err.println("IOException in Server: " +
-                   //e.getMessage());
-                   //RiskUtil.printStackTrace(e);
-                   //System.exit(-1);
+      }
+      catch (IOException e) {
+         //System.err.println("IOException in Server: " +
+         //e.getMessage());
+         //RiskUtil.printStackTrace(e);
+         //System.exit(-1);
 
-	}
-	// The following call should terminate all child threads
-	// myChatArea.setStopFlag();
-	//System.out.println("Terminating ChatServer");
+      }
+      // The following call should terminate all child threads
+      // myChatArea.setStopFlag();
+      //System.out.println("Terminating ChatServer");
 
-	gui.sendMessage("no one can join now",false,false);
+      gui.sendMessage("no one can join now",false,false);
 
-    }
+   }
 
-    // Calling this routine should tell all of the chatserver
-    // threads to terminate
+   // Calling this routine should tell all of the chatserver
+   // threads to terminate
 
-    public synchronized void closeSocket() throws IOException {
+   public synchronized void closeSocket() throws IOException {
 
-	serverSocket.close();
+      serverSocket.close();
 
-	stopFlag=true;
+      stopFlag=true;
 
-	notifyAll();
+      notifyAll();
 
-    }
+   }
 
-    public boolean isOff() {
+   public boolean isOff() {
 
-	return serverSocket.isClosed();
-    }
+      return serverSocket.isClosed();
+   }
 
 
-    // Add a new string to all linked lists
-    synchronized void putString(int index, String s) {
+   // Add a new string to all linked lists
+   synchronized void putString(int index, String s) {
 
-	for (int i= 0; i < chatArr.length; i++)
-           if (chatArr[i] != null)
-               chatArr[i].m_lList.addLast(s);
-	notifyAll();
-	//System.out.println("putString: "+ s);
+      for (int i= 0; i < chatArr.length; i++)
+         if (chatArr[i] != null)
+            chatArr[i].m_lList.addLast(s);
+      notifyAll();
+      //System.out.println("putString: "+ s);
 
 
-	// kill the serverSocket so noone can join the game now
-	try { serverSocket.close(); } catch (IOException e) { }
+      // kill the serverSocket so noone can join the game now
+      try { serverSocket.close(); } catch (IOException e) { }
 
 
-    }
+   }
 
-    // called to get the list of strings awaiting any given
-    // thread
-    synchronized String getStrings(int index) {
-       if (chatArr[index]==null) return null;
+   // called to get the list of strings awaiting any given
+   // thread
+   synchronized String getStrings(int index) {
+      if (chatArr[index]==null) return null;
 
-        int i, num;        
-       String str;
-       StringBuffer sb = new StringBuffer("");
-       LinkedList lList = chatArr[index].m_lList;
-       num=lList.size();
-       try {
+      int i, num;
+      String str;
+      StringBuffer sb = new StringBuffer("");
+      LinkedList lList = chatArr[index].m_lList;
+      num=lList.size();
+      try {
 
-           for (i=0; i < num; i++) {
+         for (i=0; i < num; i++) {
 
-               str = (String)lList.removeFirst();
-               sb.append( str);
-               sb.append("\n");
-           }
-       }
-       catch (NoSuchElementException e) {
-           System.err.println("Our List Count is Messed Up???");
-       }
-      
-       return sb.toString();
-    }
+            str = (String)lList.removeFirst();
+            sb.append( str);
+            sb.append("\n");
+         }
+      }
+      catch (NoSuchElementException e) {
+         System.err.println("Our List Count is Messed Up???");
+      }
 
-    // called to wait for any new messages for a given thread
+      return sb.toString();
+   }
 
-    synchronized String waitForString(int index) {
+   // called to wait for any new messages for a given thread
 
-       String str;
+   synchronized String waitForString(int index) {
 
-       do {
-		str = getStrings(index);
-                
-                if (str == null) return null;
-                
-		try {
-                       if (str.length()== 0)               
-                           wait(); 
-		}
-		catch (InterruptedException e) {
+      String str;
 
-                           //System.out.println("Interrupted wait call");
-		}
+      do {
+         str = getStrings(index);
 
-               if (stopFlag)
-                   return null;
+         if (str == null) return null;
 
-       } while (str.length() == 0);
+         try {
+            if (str.length()== 0)
+               wait();
+         }
+         catch (InterruptedException e) {
 
-       return str;
-    }
+            //System.out.println("Interrupted wait call");
+         }
 
-    // Cread a new chat data structure
-    //synchronized void addNewChat(int index) {
-    //   chatArr[index] = new Chat();
-    //}
+         if (stopFlag)
+            return null;
 
-    //synchronized void removeChat(int index) {
-    //   chatArr[index] = null;
-    //}
+      } while (str.length() == 0);
 
-    synchronized void imDead(int index) {
-        chatArr[index] = null;
-	notifyAll();
-    }
+      return str;
+   }
+
+   // Cread a new chat data structure
+   //synchronized void addNewChat(int index) {
+   //   chatArr[index] = new Chat();
+   //}
+
+   //synchronized void removeChat(int index) {
+   //   chatArr[index] = null;
+   //}
+
+   synchronized void imDead(int index) {
+      chatArr[index] = null;
+      notifyAll();
+   }
 }
