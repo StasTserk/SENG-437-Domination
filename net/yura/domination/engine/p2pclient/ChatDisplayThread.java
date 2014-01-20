@@ -12,44 +12,44 @@ import net.yura.domination.engine.Risk;
  */
 
 
- // This thread reads in input stream from a socket and 
- // appends the output to a TextArea object
+// This thread reads in input stream from a socket and
+// appends the output to a TextArea object
 
-public class ChatDisplayThread extends Thread {    
-   Risk risk; 
+public class ChatDisplayThread extends Thread {
+   Risk risk;
    BufferedReader inChat = null;
 
-    ChatDisplayThread (Risk r, BufferedReader in) { 
-        super("ChatDisplayThread");
-        risk = r;
-        inChat = in; 
-    }
+   ChatDisplayThread (Risk r, BufferedReader in) {
+      super("ChatDisplayThread");
+      risk = r;
+      inChat = in;
+   }
 
-    public void run() {
-	//System.out.println("Start DisplayThread ");
-	String str;
-	//boolean badexit=true;
+   public void run() {
+      //System.out.println("Start DisplayThread ");
+      String str;
+      //boolean badexit=true;
 
-	try {
-               while ((str = inChat.readLine()) != null) {
-                       if (str.length() > 0) {
-                           risk.parserFromNetwork( str );
-                       }
-               }
-	}
-	catch (IOException e) {
+      try {
+         while ((str = inChat.readLine()) != null) {
+            if (str.length() > 0) {
+               risk.parserFromNetwork( str );
+            }
+         }
+      }
+      catch (IOException e) {
 
-	    //System.out.println("inChat received an IOException: "+
-	    //e.getMessage());
-	    //RiskUtil.printStackTrace(e);
+         //System.out.println("inChat received an IOException: "+
+         //e.getMessage());
+         //RiskUtil.printStackTrace(e);
 
-	    //if ("Stream closed".equals( e.getMessage() ) ) { badexit=false; }
+         //if ("Stream closed".equals( e.getMessage() ) ) { badexit=false; }
 
-       }
+      }
 
-	//System.out.println("Display Thread Finishing");
+      //System.out.println("Display Thread Finishing");
 
-	risk.disconnected();
+      risk.disconnected();
 
-    } 
-} 
+   }
+}

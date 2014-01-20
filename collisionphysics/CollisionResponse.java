@@ -22,28 +22,28 @@ package collisionphysics;
 public class CollisionResponse {
    // Quantities that involve in further operations are declared as
    // double; otherwise float. 
-   
+
    /** Detected collision time, reset to Float.MAX_VALUE */
    public float t;
    // Time threshold to be subtracted from collision time
    // to prevent moving over the bound. Assume that t <= 1.
    private static final float T_EPSILON = 0.005f;
-   
+
    /** Computed speed in x-direction after collision */
    public float newSpeedX;
    /** Computed speed in y-direction after collision */
    public float newSpeedY;
-   
+
    /** Constructor which resets the collision time to infinity. */
    public CollisionResponse() {
       reset();  // Reset detected collision time to infinity
    }
-   
+
    /** Reset the detected collision time to infinity. */
    public void reset() {
       this.t = Float.MAX_VALUE;
    }
-   
+
    /**
     * Copy this instance to another, used to find the earliest collision.
     *    
@@ -70,7 +70,7 @@ public class CollisionResponse {
          return currentX;
       }
    }
-   
+
    /**
     * Return the y-position after impact.
     * 
@@ -98,7 +98,7 @@ public class CollisionResponse {
    public double getImpactX(float currentX, float speedX) {
       return currentX + speedX * t;
    }
-   
+
    /**
     * Return the precise y-position of the point of impact.
     * Needed in some collision detection operations.

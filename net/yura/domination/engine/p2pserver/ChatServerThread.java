@@ -15,107 +15,107 @@ import net.yura.domination.engine.core.RiskGame;
  * @author Yura Mamyrin
  */
 
-// The main child thread waits for new information in the ChatArea, and 
+// The main child thread waits for new information in the ChatArea, and
 // sends it out to the eagerly waiting clients
 
 public class ChatServerThread extends Thread {
 
-    LinkedList m_lList = new LinkedList();
+   LinkedList m_lList = new LinkedList();
 
-    private Socket socket = null;
-    int myIndex;
-    ChatReader myReaderThread; 
-    ChatArea myChatArea;
+   private Socket socket = null;
+   int myIndex;
+   ChatReader myReaderThread;
+   ChatArea myChatArea;
 
-    public ChatServerThread(Socket socket, ChatArea cArea, int me) {
-           super("ChatServerThread");
-           this.socket = socket;
-           myChatArea = cArea;
-           myIndex= me;
-           //System.out.println("Creating Thread "+myIndex);
-    }
+   public ChatServerThread(Socket socket, ChatArea cArea, int me) {
+      super("ChatServerThread");
+      this.socket = socket;
+      myChatArea = cArea;
+      myIndex= me;
+      //System.out.println("Creating Thread "+myIndex);
+   }
 
-	public void run() {
+   public void run() {
 
-		String outputLine;
-                String id=null;
+      String outputLine;
+      String id=null;
 
-		try {
+      try {
 
-			// First create the Streams associated with the Socket
+         // First create the Streams associated with the Socket
 
-			// Outbound Stream (actually a PrintWriter)
+         // Outbound Stream (actually a PrintWriter)
 
-			PrintWriter outChat = new PrintWriter(
-                           socket.getOutputStream(), true);
+         PrintWriter outChat = new PrintWriter(
+               socket.getOutputStream(), true);
 
-			// Inbound Stream (actually a BufferedReader)
+         // Inbound Stream (actually a BufferedReader)
 
-			BufferedReader inChat = new BufferedReader(
-                               new InputStreamReader(
-                                   socket.getInputStream()));
+         BufferedReader inChat = new BufferedReader(
+               new InputStreamReader(
+                  socket.getInputStream()));
 
 
-			// got a connection from the client and do a read right away to get the version
+         // got a connection from the client and do a read right away to get the version
 
-			String hello = inChat.readLine(); // "10 myID#123456 default.map"
-			int index = hello.indexOf(' ');
-			String version = hello.substring(0,index);
-                        
-                        if (!RiskGame.NETWORK_VERSION.equals(version)) {
+         String hello = inChat.readLine(); // "10 myID#123456 default.map"
+         int index = hello.indexOf(' ');
+         String version = hello.substring(0,index);
 
-                            outChat.println( "ERROR version missmatch, server: "+RiskGame.NETWORK_VERSION+", and client: "+version );
+         if (!RiskGame.NETWORK_VERSION.equals(version)) {
 
-                        }
-                        else {
+            outChat.println( "ERROR version missmatch, server: "+RiskGame.NETWORK_VERSION+", and client: "+version );
 
-                            hello = hello.substring(index+1);
-                            index = hello.indexOf(' ');
-                            id = hello.substring(0,index);
-                            String map = hello.substring(index+1);
-                        
-                            if (!RiskGame.getDefaultMap().equals( map )) {
-                                    outChat.println( "server choosemap "+RiskGame.getDefaultMap() );
-                            }
+         }
+         else {
 
-                            // Create a separate thread to handle the incomming socket data      
-                            myReaderThread = new ChatReader(inChat, myChatArea, myIndex);
-                            myReaderThread.start();
+            hello = hello.substring(index+1);
+            index = hello.indexOf(' ');
+            id = hello.substring(0,index);
+            String map = hello.substring(index+1);
 
-                            // meanwhile, this thread will wait for new chatArea data and when
-                            // received, it will be dispersed to the connected client. 
+            if (!RiskGame.getDefaultMap().equals( map )) {
+               outChat.println( "server choosemap "+RiskGame.getDefaultMap() );
+            }
 
-                            do  {
-                                    outputLine = myChatArea.waitForString(myIndex);
-                                    if (outputLine != null)
-                                            outChat.println(outputLine);
-                            }
-                            while (outputLine != null);  
+            // Create a separate thread to handle the incomming socket data
+            myReaderThread = new ChatReader(inChat, myChatArea, myIndex);
+            myReaderThread.start();
 
-                        }
+            // meanwhile, this thread will wait for new chatArea data and when
+            // received, it will be dispersed to the connected client.
 
-			// seems to get stuck if called here
-			//inChat.close();
-			//outChat.close();
+            do  {
+               outputLine = myChatArea.waitForString(myIndex);
+               if (outputLine != null)
+                  outChat.println(outputLine);
+            }
+            while (outputLine != null);
 
-			socket.shutdownInput();
-			socket.shutdownOutput();
+         }
 
-			socket.close();
+         // seems to get stuck if called here
+         //inChat.close();
+         //outChat.close();
 
-			inChat.close();
-			outChat.close();
+         socket.shutdownInput();
+         socket.shutdownOutput();
 
-		}
-		catch (IOException e) {
-                       //System.out.println("ChatServerThread IOException: "+
-                       //e.getMessage());
-                       //RiskUtil.printStackTrace(e);
-		}
+         socket.close();
 
-                myChatArea.putString(myIndex, "LEAVE "+id);
-                
-		//System.out.println("ChatServerThread Terminating: " + myIndex);
+         inChat.close();
+         outChat.close();
 
-	}
+      }
+      catch (IOException e) {
+         //System.out.println("ChatServerThread IOException: "+
+         //e.getMessage());
+         //RiskUtil.printStackTrace(e);
+      }
+
+      myChatArea.putString(myIndex, "LEAVE "+id);
+
+      //System.out.println("ChatServerThread Terminating: " + myIndex);
+
+   }
 }
