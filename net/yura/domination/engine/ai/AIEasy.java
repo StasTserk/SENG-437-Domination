@@ -9,12 +9,12 @@ import net.yura.domination.engine.ai.logic.AIDomination;
  */
 public class AIEasy extends AbstractAI {
 
-   public int getType() {
-      return AIDomination.PLAYER_AI_EASY;
-   }
+	public int getType() {
+		return AIDomination.PLAYER_AI_EASY;
+	}
 
-   public String getCommand() {
-      return "easy";
-   }
+	public String getCommand() {
+		return "easy";
+	}
 
 }

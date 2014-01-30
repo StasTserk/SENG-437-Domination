@@ -5,18 +5,23 @@ package net.yura.domination.engine.guishared;
  */
 public interface MapPanel {
 
-   public int getCountryNumber(int x, int y);
-   public void repaint();
+	public int getCountryNumber(int x, int y);
 
-   public void setHighLight(int i);
-   public int getHighLight();
+	public void repaint();
 
-   public void setC1(int i);
-   public int getC1();
+	public void setHighLight(int i);
 
-   public void setC2(int i);
-   public int getC2();
+	public int getHighLight();
 
-   public int getMapWidth();
-   public int getMapHeight();
+	public void setC1(int i);
+
+	public int getC1();
+
+	public void setC2(int i);
+
+	public int getC2();
+
+	public int getMapWidth();
+
+	public int getMapHeight();
 }

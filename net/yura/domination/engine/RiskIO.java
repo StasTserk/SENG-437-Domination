@@ -10,22 +10,27 @@ import net.yura.domination.engine.core.RiskGame;
 
 public interface RiskIO {
 
-   /**
-    * for access to local files like game.ini or commands.txt, credits.htm
-    */
-   InputStream openStream(String name) throws IOException;
+	/**
+	 * for access to local files like game.ini or commands.txt, credits.htm
+	 */
+	InputStream openStream(String name) throws IOException;
 
-   InputStream openMapStream(String name) throws IOException;
-   ResourceBundle getResourceBundle(Class a,String n,Locale l);
-   void openURL(URL url) throws Exception;
-   void openDocs(String doc) throws Exception;
+	InputStream openMapStream(String name) throws IOException;
 
-   // only here coz of android, as are not used for lobby
-   void saveGameFile(String name,RiskGame obj) throws Exception;
-   InputStream loadGameFile(String file) throws Exception;
+	ResourceBundle getResourceBundle(Class a, String n, Locale l);
 
-   OutputStream saveMapFile(String fileName) throws Exception;
-   void renameMapFile(String oldName, String newName);
+	void openURL(URL url) throws Exception;
 
-   void getMap(String filename,Risk risk,Exception ex);
+	void openDocs(String doc) throws Exception;
+
+	// only here coz of android, as are not used for lobby
+	void saveGameFile(String name, RiskGame obj) throws Exception;
+
+	InputStream loadGameFile(String file) throws Exception;
+
+	OutputStream saveMapFile(String fileName) throws Exception;
+
+	void renameMapFile(String oldName, String newName);
+
+	void getMap(String filename, Risk risk, Exception ex);
 }

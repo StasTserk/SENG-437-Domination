@@ -7,18 +7,26 @@ import net.yura.domination.engine.core.RiskGame;
  */
 public interface AI {
 
-   int getType();
-   String getCommand();
+	int getType();
 
-   void setGame(RiskGame game);
+	String getCommand();
 
-   String getBattleWon();
-   String getTacMove();
-   String getTrade();
-   String getPlaceArmies();
-   String getAttack();
-   String getRoll();
-   String getCapital();
-   String getAutoDefendString();
+	void setGame(RiskGame game);
+
+	String getBattleWon();
+
+	String getTacMove();
+
+	String getTrade();
+
+	String getPlaceArmies();
+
+	String getAttack();
+
+	String getRoll();
+
+	String getCapital();
+
+	String getAutoDefendString();
 
 }

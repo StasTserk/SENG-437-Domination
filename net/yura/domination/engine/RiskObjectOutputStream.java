@@ -9,8 +9,8 @@ import java.io.OutputStream;
  */
 public class RiskObjectOutputStream extends ObjectOutputStream {
 
-   public RiskObjectOutputStream(OutputStream out) throws IOException {
-      super(out);
-   }
+	public RiskObjectOutputStream(OutputStream out) throws IOException {
+		super(out);
+	}
 
 }

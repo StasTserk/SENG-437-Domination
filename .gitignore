@@ -7,3 +7,9 @@
 
 # Textpad Output
 *.bat
+/nbproject/private/
+/dist/
+/build/
+/net/nbproject/private/
+/net/build/
+/net/dist/
