@@ -12,10 +12,14 @@ package DominationTests;
 
 import net.yura.domination.engine.core.*;
 import org.junit.Test;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import static org.junit.Assert.assertEquals;
 
 public class TestCoreCard {
-
+	
+	@Test
+	public void testGetName()
+	{
+		Card card = new Card(Card.CANNON, null);
+		assertEquals(card.getName(), Card.CANNON);
+	}
 }
