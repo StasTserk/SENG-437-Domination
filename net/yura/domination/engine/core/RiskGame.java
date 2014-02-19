@@ -34,7 +34,7 @@ import net.yura.domination.engine.translation.TranslationBundle;
  */
 
 public class RiskGame implements Serializable { // transient
-
+	
 	private static final long serialVersionUID = 8L;
 	public final static String SAVE_VERSION = String.valueOf(serialVersionUID);
 
@@ -154,6 +154,15 @@ public class RiskGame implements Serializable { // transient
 	/**
 	 * Creates a new RiskGame
 	 */
+	public RiskGame(int unused){         
+		setup=0; 
+		Players = new Vector();         
+		currentPlayer=null;         
+		gameState=STATE_NEW_GAME;         
+		cardState=0;              
+		replayCommands = new Vector();                  
+		r = new Random();     
+		}
 	public RiskGame() throws Exception {
 
 		// try {
@@ -442,6 +451,9 @@ public class RiskGame implements Serializable { // transient
 	 * @return String Returns the name of a randomly picked player from the set
 	 *         of players
 	 */
+	public void setGamesState(int n){
+		gameState = n;
+	}
 	public int getRandomPlayer() {
 		return r.nextInt(Players.size());
 	}
@@ -1461,7 +1473,7 @@ public class RiskGame implements Serializable { // transient
 		return false;
 
 	}
-
+	
 	/**
 	 * Check if a player has won the game
 	 * 
@@ -2459,12 +2471,15 @@ public class RiskGame implements Serializable { // transient
 		// e.writeObject(this);
 		// e.close();
 	}
-
+	public void setMaxDefendDice(int m){
+		maxDefendDice = m;
+	}
 	/**
 	 * Gets the state of the game
 	 * 
 	 * @return int Returns the game state
 	 */
+	
 	public int getState() {
 		return gameState;
 	}
