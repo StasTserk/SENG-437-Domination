@@ -48,4 +48,11 @@ public class TestCoreCard {
 		Card card = new Card(Card.WILDCARD, null);
 		assertEquals(card.getName(), Card.WILDCARD);
 	}
+	
+	@Test(expected = IllegalArgumentException.class) 
+	public void testInvalidName()
+	{
+		Card card = new Card("Cards", null);
+		assertEquals(card.getName(), Card.WILDCARD);
+	}
 }

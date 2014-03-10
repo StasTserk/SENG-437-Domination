@@ -13,3 +13,15 @@
 /net/nbproject/private/
 /net/build/
 /net/dist/
+
+# Clover output
+
+*.css
+*.html
+*.s
+.clover*
+
+#misc
+
+*.xml
+*.properties
