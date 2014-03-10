@@ -297,6 +297,8 @@ public class PlayerTest {
 	@Test(timeout = TIMEOUT)
 	public void testGetSetMission()
 	{
-		Mission m = new Mission(this, 0, 0, null, null, null, null)
+		Mission m = new Mission(p, 0, 0,null, null, null, "Description");
+		p.setMission(m);
+		assertEquals(m, p.getMission());
 	}
 }
