@@ -13,6 +13,8 @@ public class CountryTest {
 
 	private final int TIMEOUT = 3000;
 	
+	//MISING JAMES CODE. ADDARMY. GETDISTANCE
+	
 	@Test(timeout = TIMEOUT)
 	public void testGetSetColour() {
 		Country country = new Country(0xFF00FF, "id1", "County", null, 0, 0);
@@ -95,4 +97,16 @@ public class CountryTest {
 		
 		assertEquals("id1 (16711935)", country.toString());
 	}
+	
+	@Test(timeout = TIMEOUT)
+    public void testGetDistanceNotUsingZero() {
+           Country country = new Country(0xFF00FF, "id1", "County", null, 0, 0);
+          
+           country.setX(2);
+           country.setY(2);
+          
+           assertEquals(2, country.getX());
+           assertEquals(2, country.getY());
+           assertEquals(13, country.getDistanceTo(7, 14));
+    }
 }

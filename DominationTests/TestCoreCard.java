@@ -11,7 +11,9 @@
 package DominationTests;
 
 import net.yura.domination.engine.core.*;
+
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 public class TestCoreCard {
@@ -53,6 +55,21 @@ public class TestCoreCard {
 	public void testInvalidName()
 	{
 		Card card = new Card("Cards", null);
+		assertEquals(card.getName(), Card.WILDCARD);
+	}
+	
+	@Test(timeout = DEFAULT_TIMEOUT)
+	public void testToStringNullCountry()
+	{
+		Card card = new Card(Card.WILDCARD, null);
+		assertEquals(card.toString(), Card.WILDCARD);
+	}
+	
+	@Test(timeout = DEFAULT_TIMEOUT)
+	public void testToStringRealCountry()
+	{
+		Country c = new Country(0xFF00FF, "id1", "County", null, 0, 0);
+		Card card = new Card(Card.WILDCARD, null);
 		assertEquals(card.getName(), Card.WILDCARD);
 	}
 }

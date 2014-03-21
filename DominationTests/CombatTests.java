@@ -257,4 +257,11 @@ public class CombatTests {
 		game.moveArmy(Attacking,Secondary,3);
 		assertTrue((Attacking.getArmies() == 7) && (Secondary.getArmies() == 13));
 	}
+	 
+    @Test(timeout = DEFAULT_TIMEOUT)
+    public void TestAddArmy() {
+           Defending.addArmy();
+          
+           assertEquals(1,Defending.getArmies());         
+    }
 }

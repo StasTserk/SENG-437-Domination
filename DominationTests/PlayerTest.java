@@ -6,6 +6,8 @@ import net.yura.domination.engine.core.Country;
 import net.yura.domination.engine.core.Player;
 import net.yura.domination.engine.core.RiskGame;
 import net.yura.domination.engine.core.Mission;
+import net.yura.domination.engine.core.StatType;
+import net.yura.domination.engine.core.Statistic;
 
 import java.util.Vector;
 import java.util.List;
@@ -17,6 +19,9 @@ public class PlayerTest {
 
 	private final int TIMEOUT = 3000;
 	private Player p;
+	
+	
+	//MISSING CODE FROM JAMES. LOSE EXTRA ARMY
 	
 	@Before
 	public void initialize()
@@ -114,6 +119,8 @@ public class PlayerTest {
 	@Test(timeout = TIMEOUT)
 	public void testTradeInCardsNoOwned_NoneOwned()
 	{
+		Statistic current_stats = new Statistic();
+		
 		Country c1 = new Country(0xFF00FF, "id1", "County1", null, 0, 0);
 		Country c2 = new Country(0xFFFFFF, "id2", "County2", null, 0, 0);
 		Country c3 = new Country(0xFF0000, "id3", "County3", null, 0, 0);
@@ -131,11 +138,16 @@ public class PlayerTest {
 		assertEquals(0, c1.getArmies());
 		assertEquals(0, c2.getArmies());
 		assertEquals(0, c3.getArmies());
+		
+		current_stats.addReinforcements(0);
+		assertTrue(current_stats.get(StatType.REINFORCEMENTS) == 0);
 	}
 	
 	@Test(timeout = TIMEOUT)
 	public void testTradeInCardsNoOwned_OneOwned()
 	{
+		Statistic current_stats = new Statistic();
+		
 		Country c1 = new Country(0xFF00FF, "id1", "County1", null, 0, 0);
 		Country c2 = new Country(0xFFFFFF, "id2", "County2", null, 0, 0);
 		Country c3 = new Country(0xFF0000, "id3", "County3", null, 0, 0);
@@ -155,11 +167,18 @@ public class PlayerTest {
 		assertEquals(2, c1.getArmies());
 		assertEquals(0, c2.getArmies());
 		assertEquals(0, c3.getArmies());
+		
+		current_stats.addReinforcements(2);
+		assertTrue(current_stats.get(StatType.REINFORCEMENTS) == 2);
+		
+		assertEquals(p.getCards().size(), 0);
 	}
 	
 	@Test(timeout = TIMEOUT)
 	public void testTradeInCardsNoOwned_TwoOwned()
 	{
+		Statistic current_stats = new Statistic();
+		
 		Country c1 = new Country(0xFF00FF, "id1", "County1", null, 0, 0);
 		Country c2 = new Country(0xFFFFFF, "id2", "County2", null, 0, 0);
 		Country c3 = new Country(0xFF0000, "id3", "County3", null, 0, 0);
@@ -179,11 +198,18 @@ public class PlayerTest {
 		assertEquals(0, c1.getArmies());
 		assertEquals(2, c2.getArmies());
 		assertEquals(0, c3.getArmies());
+		
+		current_stats.addReinforcements(2);
+		assertTrue(current_stats.get(StatType.REINFORCEMENTS) == 2);
+		
+		assertEquals(p.getCards().size(), 0);
 	}
 	
 	@Test(timeout = TIMEOUT)
 	public void testTradeInCardsNoOwned_ThreeOwned()
 	{
+		Statistic current_stats = new Statistic();
+		
 		Country c1 = new Country(0xFF00FF, "id1", "County1", null, 0, 0);
 		Country c2 = new Country(0xFFFFFF, "id2", "County2", null, 0, 0);
 		Country c3 = new Country(0xFF0000, "id3", "County3", null, 0, 0);
@@ -203,6 +229,11 @@ public class PlayerTest {
 		assertEquals(0, c1.getArmies());
 		assertEquals(0, c2.getArmies());
 		assertEquals(2, c3.getArmies());
+		
+		current_stats.addReinforcements(2);
+		assertTrue(current_stats.get(StatType.REINFORCEMENTS) == 2);
+		
+		assertEquals(p.getCards().size(), 0);
 	}
 	
 	@Test(timeout = TIMEOUT)
@@ -297,6 +328,29 @@ public class PlayerTest {
 	@Test(timeout = TIMEOUT)
 	public void testGetSetMission()
 	{
-		Mission m = new Mission(this, 0, 0, null, null, null, null)
+		Mission m = new Mission(p, 0, 0,null, null, null, "Description");
+		p.setMission(m);
+		assertEquals(m, p.getMission());
 	}
+	
+	
+	@Test(timeout = TIMEOUT)
+	public void testLostCountry()
+	{
+		p = new Player(Player.PLAYER_HUMAN, "Steve", 0x00FF00, "localhost");
+		Country country = new Country(0xFF00FF, "id1", "County1", null, 0, 0);
+		
+		country.setOwner(p);
+		
+		p.lostCountry(country);
+		assertEquals(0, p.getTerritoriesOwned().size());
+	}
+
+	@Test(timeout = TIMEOUT)
+    public void testLoseExtraArmy()
+    {
+           p.addArmies(5);
+           p.loseExtraArmy(1);       
+           assertEquals(4,p.getExtraArmies());
+    }
 }
